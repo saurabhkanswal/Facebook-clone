@@ -7,14 +7,14 @@ import NearMeIcon from '@material-ui/icons/NearMe';
 import ExpandMoreOutlinedIcon from '@material-ui/icons/ExpandMoreOutlined';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
-function Post({profilePic, username, image, timestamp, message }) {
+function Post({profilePic, username, image, message }) {
     return (
         <div className="post">
             <div className="post_top">
             <Avatar src={profilePic} className="post_avatar"/>
             <div className="post_topInfo">
             <h3>{username}</h3>
-            <p>{timestamp}</p>
+            <p>...</p>
             </div></div>
             <div className="post_bottom">
                 <p>{message}</p>

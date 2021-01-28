@@ -1,25 +1,47 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './MessageSender.css'
 import {Avatar} from '@material-ui/core'
 import VideocamIcon from '@material-ui/icons/Videocam';
 import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import {useStateValue} from './StateProvider';
+import db from './firebase';
+import firebase from 'firebase';
 
 function MessageSender() {
     const [{user}, dispatch] = useStateValue();
-    const onsubmit = (e)=>{
+    const [input, setInput] = useState("");
+    const [imageUrl, setImageUrl] = useState("");
+
+    const handleSubmit = (e)=>{
         e.preventDefault();
-        console.log('work');
+        db.collection("posts").add({
+            message: input,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            profilePic: user.photoURL,
+            username: user.displayName,
+            image: imageUrl
+        })
+        setInput("");
+        setImageUrl("");
     }
     return (
         <div className="messageSender">
             <div className="messageSender_top">
                 <Avatar src={user.photoURL}/>
                 <form>
-                <input placeholder="What's on your mind" className="messageSender_input"/>
-                <input placeholder="Paste image URL (optional)"/>
-                <button onClick={onsubmit} type="submit">submit</button>
+                <input value={input}
+                 placeholder={`Whats on your mind ${user.displayName}`} className="messageSender_input"
+                 onChange={(e) => setInput(e.target.value)}
+                 type="text"
+                 />
+                <input 
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="Paste image URL (optional)" 
+                type="text"
+                />
+                <button onClick={handleSubmit} type="submit">submit</button>
                 </form>
             </div>
             <div className="messageSender_bottom">
